@@ -22,6 +22,7 @@ import urllib.request as u2
 from urllib.error import HTTPError
 from base64 import b64encode
 import socket
+import ssl
 from suds.transport import Transport, TransportError, Reply
 from suds.properties import Unskin
 from http.cookiejar import CookieJar
@@ -136,6 +137,13 @@ class HttpTransport(Transport):
         @rtype: [Handler,...]
         """
         handlers = []
+        # build a special unverified HTTPSHandler
+        unverified_context = ssl.create_default_context()
+        unverified_context.check_hostname = False
+        unverified_context.verify_mode = ssl.CERT_NONE
+        unverified_handler = urllib.request.HTTPSHandler(context=unverified_context)
+
+        handlers.append(unverified_handler)
         handlers.append(u2.ProxyHandler(self.proxy))
         return handlers
 
