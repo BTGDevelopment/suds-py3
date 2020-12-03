@@ -141,7 +141,7 @@ class HttpTransport(Transport):
         unverified_context = ssl.create_default_context()
         unverified_context.check_hostname = False
         unverified_context.verify_mode = ssl.CERT_NONE
-        unverified_handler = urllib.request.HTTPSHandler(context=unverified_context)
+        unverified_handler = u2.HTTPSHandler(context=unverified_context)
 
         handlers.append(unverified_handler)
         handlers.append(u2.ProxyHandler(self.proxy))
